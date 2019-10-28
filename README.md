@@ -81,7 +81,7 @@ supervision for the "upper-bound" reference metric in the paper.
 The scripts in `elasticsearch_dse` allow you to generate new PubMed-DSE
 tasks.
 
-Please check the relevant [README]().
+Please check the relevant [README](https://github.com/sayaendo/document-set-expansion-pu/tree/master/dse/elasticsearch_dse).
 
 ### PubMed-DSE-15
 
@@ -90,4 +90,4 @@ tasks that we made for our paper here:
 * [Individual Files](http://nlp.biu.ac.il/~jacovia/pubmed-dse/)
 * [Zip](http://nlp.biu.ac.il/~jacovia/pubmed-dse-15.zip) (535 MB)
 
-The aforementioned [README]() contains more details.
+The aforementioned [README](https://github.com/sayaendo/document-set-expansion-pu/tree/master/dse/elasticsearch_dse) contains more details.
