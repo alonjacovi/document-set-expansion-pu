@@ -20,7 +20,16 @@ Or alternatively, upgrade the script to the v7 API (I'd appreciate it!).
 
 Download from [here](https://www.nlm.nih.gov/databases/download/pubmed_medline.html).
 
-## Creating a new index
+## Usage
+
+Before using either of the scripts, first boot up the Elasticsearch server
+by running:
+ 
+`elasticsearch-<version>/bin/elasticsearch`
+
+in the background, assuming that you downloaded `elasticsearch-<version>`.
+
+### Creating a new index
 
 The `build_pubmed_es_index.py` script can create a new PubMed index.
 Please use `--help` for more info.
@@ -44,7 +53,7 @@ path-to
 ```
 
 
-## Generating new tasks
+### Generating new tasks
 
 The `query_pubmed_es_index.py` script will query an existing pubmed elasticsearch
 index and generate new tasks from it based on a given topic
