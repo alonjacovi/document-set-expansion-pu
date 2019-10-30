@@ -45,13 +45,8 @@ local embedding_size = 50;
   },
   iterator: {
     type: "proportional",
-    batch_size: 500,
+    batch_size: 1000,
     num_cycles: 1,
-  },
-  validation_iterator: {
-    type: "bucket",
-    sorting_keys: [["abstract", "num_tokens"], ["title", "num_tokens"]],
-    batch_size: 500,
   },
   trainer: {
     num_epochs: 100,
