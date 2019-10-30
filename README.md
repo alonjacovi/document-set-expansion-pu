@@ -1,6 +1,6 @@
 # Scalable Evaluation and Improvement of Document Set Expansion via Neural Positive-Unlabeled Learning
 #### Authors:  Alon Jacovi, Gang Niu, Yoav Goldberg, Masashi Sugiyama
-#### Paper: -link soon-
+#### Paper: [https://arxiv.org/abs/1910.13339]
 
 Abstract:
 We consider the situation in which a user has collected a small set of 
