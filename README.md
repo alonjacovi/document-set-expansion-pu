@@ -50,6 +50,8 @@ we recommend to fine-tune the `pu_gamma` hyper-parameter.
 
 Please check AllenNLP for more details.
 
+*Important Note*: AllenNLP currently doesn't allow me the option of using a different iterator between training validation and testing. For PU learning evaluation, we need to use a proportional iterator for validation but a normal iterator for testing and evaluation. So to evaluate your model with the test set, you have to predict on the test set and calculate the F1 metric yourself. I will update when I find a better solution
+
 #### Config
 
 The two config jsonnets in `experiments` contain example configurations
