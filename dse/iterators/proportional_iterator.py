@@ -51,64 +51,83 @@ class ProportionalIterator(DataIterator):
         recommended due to how proportional batching works.
         """
         for instance_list in self._memory_sized_lists(instances):
-            shuffle = True
+            if len(instance_list) > 0 and instance_list[0].fields['md']['evaluation']:
+                # Iterate without proportional batching - basic iterator
 
-            if shuffle:
-                random.shuffle(instance_list)
-
-            instance_lists = {}
-
-            for inst in instance_list:
-                if inst['label'].label not in instance_lists:
-                    instance_lists[inst['label'].label] = []
-
-                assert len(instance_lists) <= 2, f"The Proportional Iterator class currently only supports binary" \
-                    f"tasks with two labels. Found more than two labels: {list(instance_lists)}"
-
-                instance_lists[inst['label'].label].append(inst)
-
-            labels = list(instance_lists)
-            if min(len(instance_lists[labels[0]]), len(instance_lists[labels[1]])) == len(instance_lists[labels[0]]):
-                smaller_class = instance_lists[labels[0]]
-                bigger_class = instance_lists[labels[1]]
+                if shuffle:
+                    random.shuffle(instance_list)
+                iterator = iter(instance_list)
+                excess: Deque[Instance] = deque()
+                # Then break each memory-sized list into batches.
+                for batch_instances in lazy_groups_of(iterator, self._batch_size):
+                    for possibly_smaller_batches in self._ensure_batch_is_sufficiently_small(
+                            batch_instances, excess
+                    ):
+                        batch = Batch(possibly_smaller_batches)
+                        yield batch
+                if excess:
+                    yield Batch(excess)
             else:
-                smaller_class = instance_lists[labels[1]]
-                bigger_class = instance_lists[labels[0]]
+                # Iterate using Proportional Batching
 
-            num_small_class_per_batch = max(1, math.ceil((len(smaller_class)
-                                                          / (len(instance_list))) * self._batch_size))
+                shuffle = True
 
-            logger.info(f"Batching proportionally: "
-                        f"{num_small_class_per_batch}:{self._batch_size-num_small_class_per_batch}")
+                if shuffle:
+                    random.shuffle(instance_list)
 
-            instance_list = []
-            smaller_class_backup = list(smaller_class)
+                instance_lists = {}
 
-            cycle_smaller_times = self.num_cycles
+                for inst in instance_list:
+                    if inst['label'].label not in instance_lists:
+                        instance_lists[inst['label'].label] = []
 
-            while len(bigger_class) != 0:
-                if num_small_class_per_batch > len(smaller_class):
-                    if shuffle:
-                        random.shuffle(smaller_class_backup)
-                    smaller_class += smaller_class_backup
-                    cycle_smaller_times -= 1
+                    assert len(instance_lists) <= 2, f"The Proportional Iterator class currently only supports binary" \
+                        f"tasks with two labels. Found more than two labels: {list(instance_lists)}"
 
-                if cycle_smaller_times == 0:
-                    break
+                    instance_lists[inst['label'].label].append(inst)
 
-                instance_list += smaller_class[:num_small_class_per_batch]
-                smaller_class = smaller_class[num_small_class_per_batch:]
+                labels = list(instance_lists)
+                if min(len(instance_lists[labels[0]]), len(instance_lists[labels[1]])) == len(instance_lists[labels[0]]):
+                    smaller_class = instance_lists[labels[0]]
+                    bigger_class = instance_lists[labels[1]]
+                else:
+                    smaller_class = instance_lists[labels[1]]
+                    bigger_class = instance_lists[labels[0]]
 
-                instance_list += bigger_class[:(self._batch_size-num_small_class_per_batch)]
-                bigger_class = bigger_class[(self._batch_size-num_small_class_per_batch):]
+                num_small_class_per_batch = max(1, math.ceil((len(smaller_class)
+                                                              / (len(instance_list))) * self._batch_size))
 
-            iterator = iter(instance_list)
-            excess: Deque[Instance] = deque()
+                logger.info(f"Batching proportionally: "
+                            f"{num_small_class_per_batch}:{self._batch_size-num_small_class_per_batch}")
 
-            for batch_instances in lazy_groups_of(iterator, self._batch_size):
-                for possibly_smaller_batches in self._ensure_batch_is_sufficiently_small(batch_instances, excess):
-                    batch = Batch(possibly_smaller_batches)
-                    yield batch
+                instance_list = []
+                smaller_class_backup = list(smaller_class)
 
-            if excess:
-                yield Batch(excess)
+                cycle_smaller_times = self.num_cycles
+
+                while len(bigger_class) != 0:
+                    if num_small_class_per_batch > len(smaller_class):
+                        if shuffle:
+                            random.shuffle(smaller_class_backup)
+                        smaller_class += smaller_class_backup
+                        cycle_smaller_times -= 1
+
+                    if cycle_smaller_times == 0:
+                        break
+
+                    instance_list += smaller_class[:num_small_class_per_batch]
+                    smaller_class = smaller_class[num_small_class_per_batch:]
+
+                    instance_list += bigger_class[:(self._batch_size-num_small_class_per_batch)]
+                    bigger_class = bigger_class[(self._batch_size-num_small_class_per_batch):]
+
+                iterator = iter(instance_list)
+                excess: Deque[Instance] = deque()
+
+                for batch_instances in lazy_groups_of(iterator, self._batch_size):
+                    for possibly_smaller_batches in self._ensure_batch_is_sufficiently_small(batch_instances, excess):
+                        batch = Batch(possibly_smaller_batches)
+                        yield batch
+
+                if excess:
+                    yield Batch(excess)

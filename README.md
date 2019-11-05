@@ -39,18 +39,24 @@ To run a model, you can use any feature of your liking from AllenNLP
 by appending this repository as an external package, and using an appropriate
 `jsonnet` configuration:
 
+For a small demo run:
 ```
-allennlp train dse/experiments/nnpu.jsonnet \
+allennlp train dse/experiments/nnpu_demo.jsonnet \
+-s <output_path> \
+--include-package dse
+```
+
+For downloading and training against the `D006435.D007676.D008875` dataset (for example):
+```
+allennlp train dse/experiments/nnpu_D006435.D007676.D008875.jsonnet \
 -s <output_path> \
 --include-package dse
 ```
 
 Please note that to achieve similar performance to what is reported in the paper,
-we recommend to fine-tune the `pu_gamma` hyper-parameter.
+we recommend to fine-tune (at least) the `pu_gamma` hyper-parameter.
 
 Please check AllenNLP for more details.
-
-*Important Note*: AllenNLP currently doesn't allow me the option of using a different iterator between training validation and testing. For PU learning evaluation, we need to use a proportional iterator for validation but a normal iterator for testing and evaluation. So to evaluate your model with the test set, you have to predict on the test set and calculate the F1 metric yourself. I will update when I find a better solution
 
 #### Config
 
@@ -60,8 +66,8 @@ additional parameters to the `DatasetReader` through HTTP protocol on the
 dataset file path:
 
 ```
-D000818.D001921.D051381/train.jsonl?label=label_L100
-D000818.D001921.D051381/test.jsonl?label=label_true
+mesh_topic/train.jsonl?label=label_L100
+mesh_topic/test.jsonl?label=label_true&evaluation=true
 ```
 
 The `label` argument allows to choose per-dataset which label to choose
@@ -74,6 +80,10 @@ split between LP and U as in the PU setup.
 Under `label_true`, the labels will be split between the true
 P and N groups, as in the PN setting. This config uses the true
 supervision for the "upper-bound" reference metric in the paper.
+
+The `evaluation` argument tells the `ProportionalIterator` to disable Proportional Batching
+for the dataset it is applied to. Use this to disable the Proportional Batching on the
+test set for accurate evaluation.
 
 
 

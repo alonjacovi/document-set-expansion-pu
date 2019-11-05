@@ -44,6 +44,8 @@ class PubmedExpansionDatasetReader(DatasetReader):
         else:
             limit = -1
 
+        assert 'evaluation' not in args or (args['evaluation'] in ['true', 'false'])
+
         count = 0
         count_pos = 0
         count_neg = 0
@@ -71,7 +73,8 @@ class PubmedExpansionDatasetReader(DatasetReader):
                 if 'limit' in args and label == 'positive/labeled' and count_pos >= int(args['limit']):
                     continue
 
-                instance = self.text_to_instance(title, abstract, pmid, label, label_true=label_true)
+                instance = self.text_to_instance(title, abstract, pmid, label, label_true=label_true,
+                                                 evaluation='evaluation' in args and args['evaluation'] == 'true')
 
                 if 'max_length' in args:
                     if instance['abstract'].sequence_length() <= int(args['max_length']):
@@ -99,17 +102,19 @@ class PubmedExpansionDatasetReader(DatasetReader):
     @overrides
     def text_to_instance(self, title: str, abstract: str, pmid: str,
                          label: str = None,
-                         label_true: float = None) -> Instance:  # type: ignore
+                         label_true: float = None,
+                         evaluation: bool = False) -> Instance:  # type: ignore
         tokenized_title = self._tokenizer.tokenize(title)
         tokenized_abstract = self._tokenizer.tokenize(abstract)
         title_field = TextField(tokenized_title, self._token_indexers)
         abstract_field = TextField(tokenized_abstract, self._token_indexers)
 
-        md = MetadataField({"pmid": pmid})
+        md = MetadataField({"pmid": pmid, "evaluation": evaluation})
         fields = {'title': title_field, 'abstract': abstract_field, 'md': md}
         if label is not None:
             fields['label'] = LabelField(label)
 
         if label_true is not None:
             fields['label_true'] = ArrayField(np.array(label_true, dtype="float32"))
+
         return Instance(fields)

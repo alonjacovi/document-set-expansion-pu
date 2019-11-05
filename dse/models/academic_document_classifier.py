@@ -80,6 +80,7 @@ class AcademicDocumentClassifier(Model):
     def forward(self,
                 title: Dict[str, torch.LongTensor],
                 abstract: Dict[str, torch.LongTensor],
+                md: MetadataField,
                 label: torch.LongTensor = None,
                 label_true: torch.FloatTensor = None) -> Dict[str, torch.Tensor]:
 

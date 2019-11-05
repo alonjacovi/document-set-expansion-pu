@@ -9,8 +9,8 @@ local embedding_size = 50;
   },
   train_data_path: "dse/pubmed_dse/L50_U1000/D000818.D001921.D051381/train.jsonl?label=label_L100",
   validation_data_path: "dse/pubmed_dse/L50_U1000/D000818.D001921.D051381/valid.jsonl?label=label_L100",
-  test_data_path: "dse/pubmed_dse/L50_U1000/D000818.D001921.D051381/test.jsonl?label=label_true",
-  evaluate_on_test: false, // please use a different iterator (like bucket) for testing
+  test_data_path: "dse/pubmed_dse/L50_U1000/D000818.D001921.D051381/test.jsonl?label=label_true&evaluation=true",
+  evaluate_on_test: true,
   model: {
     type: "doc_classifier",
     pu_loss: true,
