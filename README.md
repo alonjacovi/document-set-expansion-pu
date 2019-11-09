@@ -21,6 +21,16 @@ effectiveness of the method using a series of experiments of retrieving
 PubMed abstracts adhering to fine-grained topics. We demonstrate 
 improvements over the base IR solution and other baselines.
 
+Please cite:
+```
+@article{jacovi2019scalable,
+  title={Scalable Evaluation and Improvement of Document Set Expansion via Neural Positive-Unlabeled Learning},
+  author={Jacovi, Alon and Niu, Gang and Goldberg, Yoav and Sugiyama, Masashi},
+  journal={arXiv preprint arXiv:1910.13339},
+  year={2019}
+}
+```
+
 ## Description
 
 This repository has two separate functions:
