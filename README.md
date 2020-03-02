@@ -47,7 +47,9 @@ generate your own PubMed tasks or download the ones we made (explained below).
 
 To run a model, you can use any feature of your liking from AllenNLP
 by appending this repository as an external package, and using an appropriate
-`jsonnet` configuration:
+`jsonnet` configuration.
+
+This code was written for AllenNLP verion `0.8.2`. It's broken in the latest version (although the changes necessary to port it aren't big).
 
 For a small demo run:
 ```
