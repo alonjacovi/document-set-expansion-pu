@@ -1,6 +1,6 @@
 # Scalable Evaluation and Improvement of Document Set Expansion via Neural Positive-Unlabeled Learning
 #### Authors:  Alon Jacovi, Gang Niu, Yoav Goldberg, Masashi Sugiyama
-#### Paper: [[https://arxiv.org/abs/1910.13339](https://aclanthology.org/2021.eacl-main.47/)]
+#### Paper: [https://aclanthology.org/2021.eacl-main.47/](https://aclanthology.org/2021.eacl-main.47/)
 
 #### This repository has been reimplemented by *Qiuyi Chen* with up-to-date codebases (as AllenNLP has been deprecated) at:
 #### *https://github.com/Beautifuldog01/AcademicDocumentClassifier_without_AllenNLP*
