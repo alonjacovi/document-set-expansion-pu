@@ -1,6 +1,6 @@
 # Scalable Evaluation and Improvement of Document Set Expansion via Neural Positive-Unlabeled Learning
 #### Authors:  Alon Jacovi, Gang Niu, Yoav Goldberg, Masashi Sugiyama
-#### Paper: [https://arxiv.org/abs/1910.13339]
+#### Paper: [[https://arxiv.org/abs/1910.13339](https://aclanthology.org/2021.eacl-main.47/)]
 
 #### This repository has been reimplemented by *Qiuyi Chen* with up-to-date codebases (as AllenNLP has been deprecated) at:
 #### *https://github.com/Beautifuldog01/AcademicDocumentClassifier_without_AllenNLP*
@@ -26,11 +26,21 @@ improvements over the base IR solution and other baselines.
 
 Please cite:
 ```
-@article{jacovi2019scalable,
-  title={Scalable Evaluation and Improvement of Document Set Expansion via Neural Positive-Unlabeled Learning},
-  author={Jacovi, Alon and Niu, Gang and Goldberg, Yoav and Sugiyama, Masashi},
-  journal={arXiv preprint arXiv:1910.13339},
-  year={2019}
+@inproceedings{jacovi-etal-2021-scalable,
+    title = "Scalable Evaluation and Improvement of Document Set Expansion via Neural Positive-Unlabeled Learning",
+    author = "Jacovi, Alon  and
+      Niu, Gang  and
+      Goldberg, Yoav  and
+      Sugiyama, Masashi",
+    booktitle = "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume",
+    month = apr,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.eacl-main.47",
+    doi = "10.18653/v1/2021.eacl-main.47",
+    pages = "581--592",
+    abstract = "We consider the situation in which a user has collected a small set of documents on a cohesive topic, and they want to retrieve additional documents on this topic from a large collection. Information Retrieval (IR) solutions treat the document set as a query, and look for similar documents in the collection. We propose to extend the IR approach by treating the problem as an instance of positive-unlabeled (PU) learning{---}i.e., learning binary classifiers from only positive (the query documents) and unlabeled (the results of the IR engine) data. Utilizing PU learning for text with big neural networks is a largely unexplored field. We discuss various challenges in applying PU learning to the setting, showing that the standard implementations of state-of-the-art PU solutions fail. We propose solutions for each of the challenges and empirically validate them with ablation tests. We demonstrate the effectiveness of the new method using a series of experiments of retrieving PubMed abstracts adhering to fine-grained topics, showing improvements over the common IR solution and other baselines.",
 }
 ```
 
